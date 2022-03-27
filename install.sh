@@ -15,7 +15,7 @@ sed -i "/origin=Debian,codename=\${distro_codename}-proposed-updates/s/\/\///g" 
 
 # Enable autoremove
 sed -i "/^\/\/\Unattended-Upgrade::Remove-Unused-Dependencies/s/\/\///g" /etc/apt/apt.conf.d/50unattended-upgrades
-sed -i "/^^Unattended-Upgrade::Remove-Unused-Dependencies \"false\";/s/^Unattended-Upgrade::Remove-Unused-Dependencies \"true\";//g" /etc/apt/apt.conf.d/50unattended-upgrades
+sed -i "s/Unattended-Upgrade::Remove-Unused-Dependencies.*/Unattended-Upgrade::Remove-Unused-Dependencies \"true\";/" /etc/apt/apt.conf.d/50unattended-upgrades
 
 # Enable automatic updates
 echo -e "APT::Periodic::Update-Package-Lists "1";
@@ -24,6 +24,10 @@ APT::Periodic::Unattended-Upgrade "1";" > /etc/apt/apt.conf.d/20auto-upgrades
 # Refresh systemd
 systemctl enable unattended-upgrades.service
 systemctl restart unattended-upgrades.service
+systemctl status unattended-upgrades.service
 
+echo -e "Done!"
 # Disable Automatic Updates on Debian
 # sudo dpkg-reconfigure --priority=low unattended-upgrades
+
+
